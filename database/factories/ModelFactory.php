@@ -45,7 +45,7 @@ $factory->define(Product::class, function (Faker\Generator $faker) {
     'name' => $faker->word,
     'description' => $faker->paragraph(1),
     'quantity' => $faker->numberBetween(1, 10),
-    'status' => $faker->randomElement([Product::PRODUCTO_DISPONIBLE, Product::PRODUCTO_NO_DISPONIBLE]),
+    'status' => $faker->randomElement([Product::AVAILABLE_PRODUCT, Product::UNAVAILABLE_PRODUCT]),
     'image' => $faker->randomElement(['laravel-black.png', 'laravel-blue.png', 'laravel-white.png']),
     // 'seller_id' => User::inRandomOrder()->first()->id,
     'seller_id' => User::all()->random()->id,
@@ -57,9 +57,8 @@ $factory->define(Transaction::class, function (Faker\Generator $faker) {
   $comprador = User::all()->except($vendedor->id)->random();
 
   return [
-    'name' => $faker->word,
     'quantity' => $faker->numberBetween(1, 3),
-    'buyer_id' => $comprad->id,
+    'buyer_id' => $comprador->id,
     'product_id' => $vendedor->products->random()->id,
   ];
 });
