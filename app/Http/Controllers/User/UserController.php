@@ -27,7 +27,23 @@ class UserController extends Controller
   */
   public function store(Request $request)
   {
-    //
+    $reglas = [
+      'name' => 'required',
+      'email' => 'required|email|unique:users',
+      'password' => 'required|min:6|confirmed'
+    ];
+
+    $this->validate($request, $reglas);
+
+    $campos = $request->all();
+    $campos['password'] = bcrypt($request->password);
+    $campos['verified'] = User::UNVERIFIED_USER;
+    $campos['verification_token'] = User::generateVerificationCode();
+    $campos['admin'] = User::REGULAR_USER;
+
+    $usuario = User::create($campos);
+
+    return response()->json(['data' => $usuario], 201);
   }
 
   /**
