@@ -11,7 +11,7 @@ class User extends Authenticatable
 
   const VERIFIED_USER = '1';
   const UNVERIFIED_USER = '0';
-  
+
   const ADMIN_USER = 'true';
   const REGULAR_USER = 'false';
 
@@ -30,6 +30,21 @@ class User extends Authenticatable
     'verification_token',
     'admin',
   ];
+
+  public function setNameAttribute($valor)
+  {
+    $this->attributes['name'] = strtolower($valor);
+  }
+
+  public function getNameAttribute($valor)
+  {
+    return ucwords($valor);
+  }
+
+  public function setEmailAttribute($valor)
+  {
+    $this->attributes['email'] = strtolower($valor);
+  }
 
   /**
   * The attributes that should be hidden for arrays.
