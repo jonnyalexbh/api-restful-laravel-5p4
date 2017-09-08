@@ -74,7 +74,7 @@ class Handler extends ExceptionHandler
     if ($exception instanceof NotFoundHttpException) {
       return $this->errorResponse('No se encontró la URL especificada', 404);
     }
-    
+
     if ($exception instanceof MethodNotAllowedHttpException) {
       return $this->errorResponse('El método especificado en la petición no es válido', 405);
     }
@@ -90,7 +90,12 @@ class Handler extends ExceptionHandler
       }
     }
 
-    return parent::render($request, $exception);
+    if (config('app.debug')) {
+      return parent::render($request, $exception);
+    }
+
+    return $this->errorResponse('Falla inesperada. Intente luego', 500);
+
   }
 
   /**
