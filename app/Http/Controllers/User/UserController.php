@@ -52,10 +52,9 @@ class UserController extends ApiController
   * @param  int  $id
   * @return \Illuminate\Http\Response
   */
-  public function show($id)
+  public function show(User $user)
   {
-    $usuario = User::findOrFail($id);
-    return $this->showOne($usuario);
+    return $this->showOne($user);
   }
 
   /**
@@ -65,17 +64,13 @@ class UserController extends ApiController
   * @param  int  $id
   * @return \Illuminate\Http\Response
   */
-  public function update(Request $request, $id)
+  public function update(Request $request, User $user)
   {
-    $user = User::findOrFail($id);
-
-    $reglas = [
+    $rules = [
       'email' => 'email|unique:users,email,' . $user->id,
       'password' => 'min:6|confirmed',
       'admin' => 'in:' . User::ADMIN_USER . ',' . User::REGULAR_USER,
     ];
-
-    $this->validate($request, $reglas);
 
     if ($request->has('name')) {
       $user->name = $request->name;
@@ -83,7 +78,7 @@ class UserController extends ApiController
 
     if ($request->has('email') && $user->email != $request->email) {
       $user->verified = User::UNVERIFIED_USER;
-      $user->verification_token = User::generarVerificationToken();
+      $user->verification_token = User::generateVerificationCode();
       $user->email = $request->email;
     }
 
@@ -93,13 +88,13 @@ class UserController extends ApiController
 
     if ($request->has('admin')) {
       if (!$user->isVerified()) {
-        return $this->errorResponse('Unicamente los usuarios verificados pueden cambiar su valor de administrador', 409);
+        return $this->errorResponse('Only verified users can modify the admin field', 409);
       }
       $user->admin = $request->admin;
     }
 
     if (!$user->isDirty()) {
-      return $this->errorResponse('Se debe especificar al menos un valor diferente para actualizar', 422);
+      return $this->errorResponse('You need to specify a different value to update', 422);
     }
 
     $user->save();
@@ -114,9 +109,8 @@ class UserController extends ApiController
   * @param  int  $id
   * @return \Illuminate\Http\Response
   */
-  public function destroy($id)
+  public function destroy(User $user)
   {
-    $user = User::findOrFail($id);
     $user->delete();
     return $this->showOne($user);
   }
