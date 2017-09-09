@@ -72,7 +72,7 @@ class CategoryController extends ApiController
 
     return $this->showOne($category);
   }
-
+  
   /**
   * Remove the specified resource from storage.
   *
@@ -81,6 +81,7 @@ class CategoryController extends ApiController
   */
   public function destroy(Category $category)
   {
-    //
+    $category->delete();
+    return $this->showOne($category);
   }
 }
