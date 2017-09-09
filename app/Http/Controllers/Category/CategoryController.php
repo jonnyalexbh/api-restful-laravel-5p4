@@ -15,9 +15,9 @@ class CategoryController extends ApiController
      */
     public function index()
     {
-     $categories = Category::all();
-     return $this->showAll($categories);
- }
+       $categories = Category::all();
+       return $this->showAll($categories);
+   }
 
     /**
      * Store a newly created resource in storage.
@@ -38,7 +38,7 @@ class CategoryController extends ApiController
      */
     public function show(Category $category)
     {
-        //
+        return $this->showOne($category);
     }
 
     /**
