@@ -8,9 +8,16 @@ use App\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\ApiController;
+use App\Transformers\TransactionTransformer;
 
 class ProductBuyerTransactionController extends ApiController
 {
+  public function __construct()
+  {
+    parent::__construct();
+
+    $this->middleware('transform.input:' . TransactionTransformer::class)->only(['store']);
+  }
   /**
   * Store a newly created resource in storage.
   *
@@ -44,7 +51,7 @@ class ProductBuyerTransactionController extends ApiController
     if ($product->quantity < $request->quantity) {
       return $this->errorResponse('The product does not have enough units for this transaction', 409);
     }
-    
+
     return DB::transaction(function() use ($request, $product, $buyer) {
       $product->quantity -= $request->quantity;
       $product->save();
