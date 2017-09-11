@@ -83,7 +83,7 @@ trait ApiResponser
     ];
 
     Validator::validate(request()->all(), $rules);
-
+    
     $page = LengthAwarePaginator::resolveCurrentPage();
 
     $perPage = 15;
@@ -112,8 +112,15 @@ trait ApiResponser
   protected function cacheResponse($data)
   {
     $url = request()->url();
+    $queryParams = request()->query();
 
-    return Cache::remember($url, 30/60, function() use($data) {
+    ksort($queryParams);
+
+    $queryString = http_build_query($queryParams);
+
+    $fullUrl = "{$url}?{$queryString}";
+
+    return Cache::remember($fullUrl, 30/60, function() use($data) {
       return $data;
     });
   }
