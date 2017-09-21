@@ -33,7 +33,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            
+
             <!-- Branding Image -->
             <a class="navbar-brand" href="{{ url('/') }}">
               {{ config('app.name', 'Laravel') }}
@@ -44,6 +44,9 @@
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
               &nbsp;
+              @if (Auth::check())
+                <li><a href="{{route('personal-tokens')}}">My Tokens</a></li>
+              @endif
             </ul>
 
             <!-- Right Side Of Navbar -->
