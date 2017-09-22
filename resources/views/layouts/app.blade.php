@@ -46,6 +46,8 @@
               &nbsp;
               @if (Auth::check())
                 <li><a href="{{route('personal-tokens')}}">My Tokens</a></li>
+                <li><a href="{{route('personal-clients')}}">My Clients</a></li>
+                <li><a href="{{route('authorized-clients')}}">Authorized Clients</a></li>
               @endif
             </ul>
 
