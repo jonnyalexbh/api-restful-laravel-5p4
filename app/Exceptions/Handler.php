@@ -67,9 +67,9 @@ class Handler extends ExceptionHandler
     if ($exception instanceof AuthenticationException) {
       return $this->unauthenticated($request, $exception);
     }
-
+    
     if ($exception instanceof AuthorizationException) {
-      return $this->errorResponse('No posee permisos para ejecutar esta acción', 403);
+      return $this->errorResponse('You do not have permissions to perform this action', 403);
     }
 
     if ($exception instanceof NotFoundHttpException) {
