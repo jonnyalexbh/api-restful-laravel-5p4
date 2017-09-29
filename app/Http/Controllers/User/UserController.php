@@ -28,6 +28,8 @@ class UserController extends ApiController
   */
   public function index()
   {
+    $this->allowedAdminAction();
+
     $usuarios = User::all();
     return $this->showAll($usuarios);
   }
@@ -100,6 +102,8 @@ class UserController extends ApiController
     }
 
     if ($request->has('admin')) {
+      $this->allowedAdminAction();
+
       if (!$user->isVerified()) {
         return $this->errorResponse('Only verified users can modify the admin field', 409);
       }
