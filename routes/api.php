@@ -14,6 +14,12 @@ use Illuminate\Http\Request;
 */
 
 /**
+* Login Api
+*/
+
+Route::post('login', 'AuthApi\LoginController@login');
+
+/**
 * Buyers
 */
 Route::resource('buyers', 'Buyer\BuyerController', ['only' => ['index', 'show']]);
